@@ -1,0 +1,74 @@
+.aqua-slider-container{
+	overflow: hidden;
+	position: relative
+}
+
+.aqua-slider-container img{
+	width:100% !important;
+	height: 100% !important;
+	left: 0% !important;
+	position: absolute !important;
+}
+
+.aqua-slider-controler{
+	background: url(aqua-imgs/aqua-control-set.png);
+	background-repeat: no-repeat;
+}
+
+.aqua-slider-arrow{
+	height:100%;
+	width: 50px;
+	border: none !important;
+	z-index: 999 !important;
+	position: absolute !important;
+	cursor: pointer;
+}
+
+.aqua-left-control{
+	left: 0% !important;
+	background-position: -53px 50%;
+}
+
+.aqua-right-control{
+	right: 0% !important;
+	background-position: -99px 50%;
+}
+
+.aqua-right-control, .aqua-left-control{
+	opacity: 0.7;
+}
+
+.aqua-slider-bot-container{
+	width:100%;
+	height: 40px;
+	background-color: #c7dcdf;
+	position: absolute;
+	bottom: 0%;
+	z-index: 9999 !important;
+}
+
+.aqua-slider-bot-container div{
+	padding: 0px;
+	width: 90%;
+	position: relative;
+	height: 100%;
+	margin: 0px auto;
+	padding: 10px;
+}
+
+.aqua-slider-tick{
+	width: 20px !important;
+	height: 20px !important;
+	position: relative;
+	background-position: -7px -26px;
+	float: left;
+	margin-right: 5px;
+}
+
+.aqua-slider-tick-select{
+	background-position: -7px -26px;
+}
+
+.aqua-slider-tick-deselect{
+	background-position: -25px -26px;
+}

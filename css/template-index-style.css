@@ -1,0 +1,13 @@
+body{
+	padding: 0px;
+	margin: 0px;
+}
+
+#container{
+	width: 800px;
+	height: auto;
+	border: none !important;
+	overflow: auto;
+	position: relative;
+	margin: 0px auto;
+}
