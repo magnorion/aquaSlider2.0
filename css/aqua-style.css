@@ -1,4 +1,4 @@
-.aqua-slider-container{
+.aqua-slider-container,.aqua-slider-control-container{
 	overflow: hidden;
 	position: relative
 }
@@ -39,26 +39,28 @@
 }
 
 .aqua-slider-bot-container{
-	width:100%;
+	width: 45%;
+	left: 27.5%;
+	right: 27.5%;
 	height: 40px;
-	background-color: #c7dcdf;
 	position: absolute;
 	bottom: 0%;
 	z-index: 9999 !important;
+	text-align: center;
 }
 
 .aqua-slider-bot-container div{
-	padding: 0px;
-	width: 90%;
-	position: relative;
 	height: 100%;
-	margin: 0px auto;
+	width: auto;
 	padding: 10px;
+	margin: 0px auto 0px 25%;
+	position: absolute;
+	background-color: rgb(255, 255, 255);
 }
 
 .aqua-slider-tick{
 	width: 20px !important;
-	height: 20px !important;
+	height: 24px !important;
 	position: relative;
 	background-position: -7px -26px;
 	float: left;
@@ -67,11 +69,11 @@
 }
 
 .aqua-slider-tick-select{
-	background-position: -7px -26px;
+	background-position: -8px -26px;
 }
 
 .aqua-slider-tick-deselect{
-	background-position: -25px -26px;
+	background-position: -26px -26px;
 }
 
 .aqua-slider-image-show{

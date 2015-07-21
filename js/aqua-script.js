@@ -2,6 +2,7 @@
 	$.fn.extend({
 		aquaSlider: function(width,height,type){
 			var aqua_self = $(this);
+			aqua_self.wrap("<div class='aqua-slider-control-container'></div>");
 			var options = {
 				w: width,
 				h: height,
@@ -26,6 +27,10 @@
 				width: options.w,
 				height: options.h
 			});
+			$(".aqua-slider-control-container").css({
+				width: options.w,
+				height: options.h
+			})
 
 			// Set class to all images 
 			var aqua_images_count = 0;
@@ -53,7 +58,7 @@
 			// "ticks" control
 			var aqua_tick_container = $("<div>");
 			aqua_tick_container.addClass("aqua-slider-bot-container");
-			$(".aqua-slider-container").append(aqua_tick_container);
+			$(".aqua-slider-container").after(aqua_tick_container);
 			$(".aqua-slider-bot-container").append("<div>");
 			var index;
 			for(index = 1;index<=aqua_images_count;index++){
@@ -120,14 +125,13 @@
 			}
 
 			function aqua_slider_current_tick(){
-				current = {
-					image: $(".aqua-slider-image-show"),
-					image_data: $(".aqua-slider-image-show").data("img-data-number"),
-				 	tick: $(".aqua-slider-tick-select").data("img-select-tick")
-				};
-
-				//var tick_target =  $.data()
-				//$(".aqua-slider-tick").
+				img_data = $(".aqua-slider-image-show").attr("img-data-number");
+				$(".aqua-slider-tick").each(function(){
+					if($(this).attr("img-select-tick") == img_data)
+						$(this).addClass("aqua-slider-tick-select").removeClass("aqua-slider-tick-deselect");
+					else
+						$(this).addClass("aqua-slider-tick-deselect").removeClass("aqua-slider-tick-select");
+				});
 			}
 
 			//btn right function
@@ -139,6 +143,7 @@
 					"opacity":0
 				},600,function(){
 					$(this).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide");
+					aqua_slider_current_tick();
 				});
 				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
 			});
@@ -151,6 +156,7 @@
 					"opacity":0
 				},600,function(){
 					$(this).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide");
+					aqua_slider_current_tick();
 				});
 				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
 			});
