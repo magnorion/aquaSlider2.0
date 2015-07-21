@@ -126,7 +126,8 @@
 				 	tick: $(".aqua-slider-tick-select").data("img-select-tick")
 				};
 
-				$(".aqua-slider-tick").
+				//var tick_target =  $.data()
+				//$(".aqua-slider-tick").
 			}
 
 			//btn right function
