@@ -1,7 +1,7 @@
 (function($){
 	$.fn.extend({
 		aquaSlider: function(width,height,type){
-			var self = $(this);
+			var aqua_self = $(this);
 			var options = {
 				w: width,
 				h: height,
@@ -22,17 +22,21 @@
 				options.t = default_options.t;
 			
 			// Set core config to image container
-			self.addClass("aqua-slider-container").css({
+			aqua_self.addClass("aqua-slider-container").css({
 				width: options.w,
 				height: options.h
 			});
 
 			// Set class to all images 
 			var aqua_images_count = 0;
-			self.find("img").each(function(){
+			aqua_self.find("img").each(function(){
 				var img_self = $(this);
 				++aqua_images_count;
 				img_self.addClass("aqua-slider-image").attr("img-data-number",aqua_images_count);
+				if(aqua_images_count == 1)
+					img_self.addClass("aqua-slider-image-show").css({opacity:1});
+				else
+					img_self.addClass("aqua-slider-image-hide").css({opacity:0});
 			});
 
 			// Build the slider controler ---
@@ -59,12 +63,96 @@
 				else
 					aqua_tick_builder.addClass("aqua-slider-tick-deselect")
 
-				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").prop("data","img-select-"+index);
+				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
 			}
 			// ---
 
 			// Creating the animation ---
+
+			function aqua_slider_current_image(){
+				current = {
+					image: $(".aqua-slider-image-show"),
+					image_data: $(".aqua-slider-image-show").data("img-data-number"),
+				 	tick: $(".aqua-slider-tick-select").data("img-select-tick")
+				};
+				return current;
+			}
+
+			function aqua_slider_next_image(){
+				next_image_data = current.image_data++;
+				if(next_image_data > aqua_images_count)
+					next_image_data = 1;
+				
+				if($(".aqua-slider-image-show").next().hasClass("aqua-slider-image")){
+					image = $(".aqua-slider-image-show").next(".aqua-slider-image");
+				}
+					
+				else{
+					image = $(".aqua-slider-image").first();
+				}
+					
+				next = {
+					data: next_image_data,
+					image: image
+				} 
+				return next;
+			}			
+
+			function aqua_slider_prev_image(){
+				next_image_data = current.image_data--;
+				if(next_image_data <= 0)
+					next_image_data = aqua_images_count;
+				
+				if($(".aqua-slider-image-show").prev().hasClass("aqua-slider-image")){
+					image = $(".aqua-slider-image-show").prev();
+				}
+					
+				else{
+					image = $(".aqua-slider-image").last();
+				}
+					
+				next = {
+					data: next_image_data,
+					image: image
+				};
+				return next;
+			}
+
+			function aqua_slider_current_tick(){
+				current = {
+					image: $(".aqua-slider-image-show"),
+					image_data: $(".aqua-slider-image-show").data("img-data-number"),
+				 	tick: $(".aqua-slider-tick-select").data("img-select-tick")
+				};
+
+				$(".aqua-slider-tick").
+			}
+
+			//btn right function
+			$(".aqua-right-control").on("click",function(){
+				aqua_slider_current_image();
+				aqua_slider_next_image();
+				
+				$(current.image).animate({
+					"opacity":0
+				},600,function(){
+					$(this).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide");
+				});
+				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+			});
+
+			$(".aqua-left-control").on("click",function(){
+				aqua_slider_current_image();
+				aqua_slider_prev_image();
+				
+				$(current.image).animate({
+					"opacity":0
+				},600,function(){
+					$(this).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide");
+				});
+				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+			});
 
 			// ---
 

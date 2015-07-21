@@ -63,6 +63,7 @@
 	background-position: -7px -26px;
 	float: left;
 	margin-right: 5px;
+	cursor: pointer;
 }
 
 .aqua-slider-tick-select{
@@ -71,4 +72,14 @@
 
 .aqua-slider-tick-deselect{
 	background-position: -25px -26px;
+}
+
+.aqua-slider-image-show{
+	z-index: 99 !important;
+	display: block;
+}
+
+.aqua-slider-image-hide{
+	z-index: 99 !important;
+	display: none;	
 }
