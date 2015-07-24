@@ -68,10 +68,20 @@
 
 .aqua-slider-tick-select{
 	background-position: -8px -26px;
+	opacity: 1;
 }
 
 .aqua-slider-tick-deselect{
 	background-position: -26px -26px;
+	opacity: 0.7;
+}
+
+.aqua-slider-number{
+	background: none !important;
+	font-family: helvetica;
+	color: #5574a6;
+	font-weight: bold;
+	font-size: 16px;
 }
 
 .aqua-slider-image-show{

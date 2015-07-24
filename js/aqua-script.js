@@ -4,8 +4,8 @@
 			var aqua_self = $(this);
 			aqua_self.wrap("<div class='aqua-slider-control-container'></div>");
 			var options = {
-				w: Number(width),
-				h: Number(height),
+				w: width,
+				h: height,
 				t: type,
 				b: bullet
 			};
@@ -14,7 +14,7 @@
 				w: 550,
 				h: 250,
 				t: "slide",
-				b: "image"
+				b: "number"
 			};
 
 			if(typeof(options.w) == "undefined")
@@ -67,10 +67,17 @@
 			var index;
 			for(index = 1;index<=aqua_images_count;index++){
 				var aqua_tick_builder = $("<span>");
-				if(index == 1)
-					aqua_tick_builder.addClass("aqua-slider-tick-select")
-				else
-					aqua_tick_builder.addClass("aqua-slider-tick-deselect")
+				if(options.b == "image"){
+					if(index == 1)
+						aqua_tick_builder.addClass("aqua-slider-tick-select")
+					else
+						aqua_tick_builder.addClass("aqua-slider-tick-deselect")
+				}else if(options.b == "number"){
+					if(index == 1)
+						aqua_tick_builder.addClass("aqua-slider-tick-select aqua-slider-number").text(index);
+					else
+						aqua_tick_builder.addClass("aqua-slider-tick-deselect aqua-slider-number").text(index);
+				}
 
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
@@ -100,12 +107,9 @@
 				
 				if($(".aqua-slider-image-show").next().hasClass("aqua-slider-image")){
 					image = $(".aqua-slider-image-show").next(".aqua-slider-image");
-				}
-					
-				else{
+				}else{
 					image = $(".aqua-slider-image").first();
-				}
-					
+				}	
 				next = {
 					data: next_image_data,
 					image: image
@@ -120,12 +124,9 @@
 				
 				if($(".aqua-slider-image-show").prev().hasClass("aqua-slider-image")){
 					image = $(".aqua-slider-image-show").prev();
-				}
-					
-				else{
+				}else{
 					image = $(".aqua-slider-image").last();
 				}
-					
 				next = {
 					data: next_image_data,
 					image: image
