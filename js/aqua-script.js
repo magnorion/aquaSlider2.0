@@ -1,18 +1,20 @@
 (function($){
 	$.fn.extend({
-		aquaSlider: function(width,height,type){
+		aquaSlider: function(width,height,type,bullet){
 			var aqua_self = $(this);
 			aqua_self.wrap("<div class='aqua-slider-control-container'></div>");
 			var options = {
-				w: width,
-				h: height,
-				t: type
+				w: Number(width),
+				h: Number(height),
+				t: type,
+				b: bullet
 			};
 
 			var default_options = {
 				w: 550,
 				h: 250,
-				t: "slide"
+				t: "slide",
+				b: "image"
 			};
 
 			if(typeof(options.w) == "undefined")
@@ -21,6 +23,8 @@
 				options.h = default_options.h;
 			if(typeof(options.t) == "undefined")
 				options.t = default_options.t;
+			if(typeof(options.b) == "undefined")
+				options.b = default_options.b;
 			
 			// Set core config to image container
 			aqua_self.addClass("aqua-slider-container").css({
@@ -30,7 +34,7 @@
 			$(".aqua-slider-control-container").css({
 				width: options.w,
 				height: options.h
-			})
+			});
 
 			// Set class to all images 
 			var aqua_images_count = 0;
@@ -71,6 +75,11 @@
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
 			}
+
+			var getSizeBot = $(".aqua-slider-bot-container").height();
+			$(".aqua-slider-control-container").css({
+				height: (options.h + getSizeBot)
+			});
 			// ---
 
 			// Creating the animation ---
