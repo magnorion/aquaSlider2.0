@@ -82,6 +82,13 @@
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
 			}
+			$(".aqua-slider-tick").each(function(){
+				var self = $(this);
+				self.on("click",function(){
+					var data = self.attr("img-select-tick");
+					aqua_slider_tick_click(data);
+				});	
+			});
 
 			var getSizeBot = $(".aqua-slider-bot-container").height();
 			$(".aqua-slider-control-container").css({
@@ -170,6 +177,18 @@
 				});
 				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
 			});
+
+			function aqua_slider_tick_click(data){
+				var aqua_image_clicked = $(aqua_self).find("[img-data-number='"+data+"']");
+				aqua_slider_current_image();
+				$(current.image).animate({
+					"opacity":0
+				},600,function(){
+					$(this).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide");
+					aqua_slider_current_tick();
+				});
+				$(aqua_image_clicked).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+			}
 
 			// ---
 
