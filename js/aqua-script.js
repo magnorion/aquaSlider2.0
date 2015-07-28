@@ -1,31 +1,16 @@
 (function($){
 	$.fn.extend({
-		aquaSlider: function(width,height,type,bullet){
+		aquaSlider: function(select){
 			var aqua_self = $(this);
 			aqua_self.wrap("<div class='aqua-slider-control-container'></div>");
-			var options = {
-				w: width,
-				h: height,
-				t: type,
-				b: bullet
-			};
-
-			var default_options = {
-				w: 550,
-				h: 250,
-				t: "slide",
-				b: "number"
-			};
-
-			if(typeof(options.w) == "undefined")
-				options.w = default_options.w;
-			if(typeof(options.h) == "undefined")
-				options.h = default_options.h;
-			if(typeof(options.t) == "undefined")
-				options.t = default_options.t;
-			if(typeof(options.b) == "undefined")
-				options.b = default_options.b;
 			
+			var options = {};
+			select = (typeof select !== "object") ? {} : select;
+			options.w = select.width || 550;
+			options.h = select.height || 250;
+			options.b = select.bullet || "number";
+			options.a = select.animation || 7000;
+
 			// Set core config to image container
 			aqua_self.addClass("aqua-slider-container").css({
 				width: options.w,
@@ -96,12 +81,43 @@
 			});
 			// ---
 
+			// Add text
+			var aqua_slider_alt_box = $("<div>");
+			aqua_slider_alt_box.addClass("aqua-slider-alt-box").css({
+				"opacity":0,
+				"bottom":"-70%"
+			});
+			$(".aqua-slider-container").append(aqua_slider_alt_box);
+			function aqua_slider_alt(){
+				if(typeof($(current.image).attr("alt")) != "undefined"){
+					$(".aqua-slider-alt-box").empty();
+					var alt_image_data = $(current.image).attr("alt");
+					$(".aqua-slider-alt-box").animate({
+						"bottom":"0%",
+						opacity:1
+					},1000,function(){
+						$(".aqua-slider-alt-box").append("<span> "+alt_image_data+" </span>");
+					});
+				}
+			}
+
+			function aqua_slider_alt_remove(){
+				$(".aqua-slider-alt-box").find("span").remove();
+				$(".aqua-slider-alt-box").stop().animate({
+					"bottom":"-70%",
+					opacity:0
+				},1000);
+			}
+			aqua_slider_current_image();
+			aqua_slider_alt();
+			// ---
+
 			// Creating the animation ---
 
 			function aqua_slider_current_image(){
 				current = {
 					image: $(".aqua-slider-image-show"),
-					image_data: $(".aqua-slider-image-show").data("img-data-number"),
+					image_data: $(".aqua-slider-image-show").attr("img-data-number"),
 				 	tick: $(".aqua-slider-tick-select").data("img-select-tick")
 				};
 				return current;
@@ -153,8 +169,14 @@
 
 			//btn right function
 			$(".aqua-right-control").on("click",function(){
-				aqua_slider_current_image();
+				// Clear the auto animation timer
+				clearTimeout(timeOut);
+				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+				// ----
+
+				aqua_slider_alt_remove();
 				aqua_slider_next_image();
+				aqua_slider_current_image();
 				
 				$(current.image).animate({
 					"opacity":0
@@ -163,11 +185,22 @@
 					aqua_slider_current_tick();
 				});
 				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+				setTimeout(function(){
+					aqua_slider_current_image();
+					aqua_slider_alt();
+				},1000);
 			});
 
+			// btn left function
 			$(".aqua-left-control").on("click",function(){
-				aqua_slider_current_image();
+				// Clear the auto animation timer
+				clearTimeout(timeOut);
+				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+				// ----
+
+				aqua_slider_alt_remove();
 				aqua_slider_prev_image();
+				aqua_slider_current_image();
 				
 				$(current.image).animate({
 					"opacity":0
@@ -176,11 +209,24 @@
 					aqua_slider_current_tick();
 				});
 				$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+				setTimeout(function(){
+					aqua_slider_current_image();
+					aqua_slider_alt();
+				},1000);
 			});
 
 			function aqua_slider_tick_click(data){
+				// Clear the auto animation timer
+				clearTimeout(timeOut);
+				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+				// ----
+
 				var aqua_image_clicked = $(aqua_self).find("[img-data-number='"+data+"']");
 				aqua_slider_current_image();
+				if(current.image_data == aqua_image_clicked.attr("img-data-number")){
+					return false;
+				}
+				aqua_slider_alt_remove();
 				$(current.image).animate({
 					"opacity":0
 				},600,function(){
@@ -188,10 +234,47 @@
 					aqua_slider_current_tick();
 				});
 				$(aqua_image_clicked).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").animate({"opacity":1},600);
+				setTimeout(function(){
+					aqua_slider_current_image();
+					aqua_slider_alt();
+				},1000);
+				
 			}
 
 			// ---
 
+			//auto animation --
+			var timeOut = null;
+			function aqua_slider_auto_slide(){
+				$(".aqua-right-control").trigger("click");
+				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+			}
+			setTimeout(function(){
+				(function(){
+					aqua_slider_auto_slide();
+				})();
+			},options.a);
+
+			aqua_self.on({
+				mouseenter:function(){
+					clearTimeout(timeOut);
+				},
+				mouseleave:function(){
+					timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+				}
+			});
+			// ---
+
+			// Get the keypress
+			$(document).keyup(function(e){
+				if(e.keyCode == 39)
+					$(".aqua-right-control").trigger("click");
+				else if(e.keyCode == 37)
+					$(".aqua-left-control").trigger("click");
+			});
+			// ----
+			
+			return aqua_self;
 		}
 	})
 })(jQuery);
