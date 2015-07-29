@@ -4,11 +4,10 @@ body{
 }
 
 #container{
-	width: 800px;
+	width: 100%;
 	height: auto;
 	border: none !important;
 	overflow: auto;
 	position: relative;
 	margin: 0px auto;
-	padding: 20px;
 }

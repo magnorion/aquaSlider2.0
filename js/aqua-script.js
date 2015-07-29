@@ -67,6 +67,8 @@
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
 			}
+			$(".aqua-slider-bot-container div span").first().before("<label class='aqua-slider-player aqua-slider-click-pause'> ■ </label>");
+
 			$(".aqua-slider-tick").each(function(){
 				var self = $(this);
 				self.on("click",function(){
@@ -169,11 +171,6 @@
 
 			//btn right function
 			$(".aqua-right-control").on("click",function(){
-				// Clear the auto animation timer
-				clearTimeout(timeOut);
-				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
-				// ----
-
 				aqua_slider_alt_remove();
 				aqua_slider_next_image();
 				aqua_slider_current_image();
@@ -193,11 +190,6 @@
 
 			// btn left function
 			$(".aqua-left-control").on("click",function(){
-				// Clear the auto animation timer
-				clearTimeout(timeOut);
-				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
-				// ----
-
 				aqua_slider_alt_remove();
 				aqua_slider_prev_image();
 				aqua_slider_current_image();
@@ -216,11 +208,6 @@
 			});
 
 			function aqua_slider_tick_click(data){
-				// Clear the auto animation timer
-				clearTimeout(timeOut);
-				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
-				// ----
-
 				var aqua_image_clicked = $(aqua_self).find("[img-data-number='"+data+"']");
 				aqua_slider_current_image();
 				if(current.image_data == aqua_image_clicked.attr("img-data-number")){
@@ -255,14 +242,18 @@
 				})();
 			},options.a);
 
-			aqua_self.on({
-				mouseenter:function(){
-					clearTimeout(timeOut);
-				},
-				mouseleave:function(){
-					timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+			//  Animation player
+			$(".aqua-slider-player").click(function(){
+				var self = $(this);
+				if(self.hasClass("aqua-slider-click-play")){
+					self.removeClass("aqua-slider-click-play").addClass("aqua-slider-click-pause").text("■");
+					timeOut = null;
+				}else{
+					self.removeClass("aqua-slider-click-pause").addClass("aqua-slider-click-play").text("►");
+				    timeOut = setTimeout(aqua_slider_auto_slide,options.a);
 				}
 			});
+
 			// ---
 
 			// Get the keypress
