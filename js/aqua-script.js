@@ -10,6 +10,9 @@
 			options.h = select.height || 250;
 			options.b = select.bullet || "number";
 			options.a = select.animation || 7000;
+			options.p = select.player || "on";
+			options.c = select.control || "on";
+			options.i = select.autoPlay || "off";
 
 			// Set core config to image container
 			aqua_self.addClass("aqua-slider-container").css({
@@ -34,15 +37,18 @@
 			});
 
 			// Build the slider controler ---
-			// Left button
-			var aqua_btn_left = $("<div>");
-			aqua_btn_left.addClass("aqua-slider-controler aqua-slider-arrow aqua-left-control");
-			$(".aqua-slider-container").append(aqua_btn_left);
+			console.log(select.control);
+			if(options.c == "on"){
+				// Left button
+				var aqua_btn_left = $("<div>");
+				aqua_btn_left.addClass("aqua-slider-controler aqua-slider-arrow aqua-left-control");
+				$(".aqua-slider-container").append(aqua_btn_left);
 
-			// Right button
-			var aqua_btn_left = $("<div>");
-			aqua_btn_left.addClass("aqua-slider-controler aqua-slider-arrow aqua-right-control");
-			$(".aqua-slider-container").append(aqua_btn_left);
+				// Right button
+				var aqua_btn_left = $("<div>");
+				aqua_btn_left.addClass("aqua-slider-controler aqua-slider-arrow aqua-right-control");
+				$(".aqua-slider-container").append(aqua_btn_left);
+			}
 
 			// "ticks" control
 			var aqua_tick_container = $("<div>");
@@ -67,7 +73,11 @@
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
 			}
-			$(".aqua-slider-bot-container div span").first().before("<label class='aqua-slider-player aqua-slider-click-pause'> ■ </label>");
+			if(options.p == "on"){
+				var aqua_player_control = $("<label>");
+				aqua_player_control.addClass("aqua-slider-controler aqua-slider-player aqua-slider-click-play");
+				$(".aqua-slider-bot-container div span").first().before(aqua_player_control);
+			}
 
 			$(".aqua-slider-tick").each(function(){
 				var self = $(this);
@@ -94,7 +104,7 @@
 				if(typeof($(current.image).attr("alt")) != "undefined"){
 					$(".aqua-slider-alt-box").empty();
 					var alt_image_data = $(current.image).attr("alt");
-					$(".aqua-slider-alt-box").animate({
+					$(".aqua-slider-alt-box").stop().animate({
 						"bottom":"0%",
 						opacity:1
 					},1000,function(){
@@ -170,7 +180,7 @@
 			}
 
 			//btn right function
-			$(".aqua-right-control").on("click",function(){
+			function aqua_slider_click_next(){
 				aqua_slider_alt_remove();
 				aqua_slider_next_image();
 				aqua_slider_current_image();
@@ -186,10 +196,12 @@
 					aqua_slider_current_image();
 					aqua_slider_alt();
 				},1000);
+			}
+			$(".aqua-right-control").on("click",function(){
+				aqua_slider_click_next();
 			});
 
-			// btn left function
-			$(".aqua-left-control").on("click",function(){
+			function aqua_slider_click_prev(){
 				aqua_slider_alt_remove();
 				aqua_slider_prev_image();
 				aqua_slider_current_image();
@@ -205,6 +217,11 @@
 					aqua_slider_current_image();
 					aqua_slider_alt();
 				},1000);
+			}
+
+			// btn left function
+			$(".aqua-left-control").on("click",function(){
+				aqua_slider_click_prev();
 			});
 
 			function aqua_slider_tick_click(data){
@@ -227,41 +244,40 @@
 				},1000);
 				
 			}
-
 			// ---
 
 			//auto animation --
 			var timeOut = null;
 			function aqua_slider_auto_slide(){
-				$(".aqua-right-control").trigger("click");
+				aqua_slider_click_next();
 				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
 			}
-			setTimeout(function(){
-				(function(){
+
+			if(options.i == "on"){
+				setTimeout(function(){
 					aqua_slider_auto_slide();
-				})();
-			},options.a);
+				},options.a);
+			}
 
 			//  Animation player
 			$(".aqua-slider-player").click(function(){
 				var self = $(this);
 				if(self.hasClass("aqua-slider-click-play")){
-					self.removeClass("aqua-slider-click-play").addClass("aqua-slider-click-pause").text("■");
-					timeOut = null;
+					self.removeClass("aqua-slider-click-play").addClass("aqua-slider-click-pause");
+					aqua_slider_auto_slide();
 				}else{
-					self.removeClass("aqua-slider-click-pause").addClass("aqua-slider-click-play").text("►");
-				    timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+					self.removeClass("aqua-slider-click-pause").addClass("aqua-slider-click-play");
+				    clearTimeout(timeOut);
 				}
 			});
-
 			// ---
 
 			// Get the keypress
 			$(document).keyup(function(e){
 				if(e.keyCode == 39)
-					$(".aqua-right-control").trigger("click");
+					aqua_slider_click_next();
 				else if(e.keyCode == 37)
-					$(".aqua-left-control").trigger("click");
+					aqua_slider_click_prev();
 			});
 			// ----
 			
