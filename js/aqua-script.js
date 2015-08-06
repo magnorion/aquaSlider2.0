@@ -36,8 +36,19 @@
 					img_self.addClass("aqua-slider-image-hide").css({opacity:0});
 			});
 
+			aqua_self.find("a").each(function(){
+				var self = $(this);
+				var href = self.attr("href");
+				var image_replace = self.children("img").attr("aqua-slider-link",href).css({"cursor":"pointer"}).on("click",function(){
+					var image_url = $(this).attr("aqua-slider-link");
+					window.location.assign(image_url);
+				});
+				self.before(image_replace);
+				self.remove();
+			});
+
+
 			// Build the slider controler ---
-			console.log(select.control);
 			if(options.c == "on"){
 				// Left button
 				var aqua_btn_left = $("<div>");
@@ -89,7 +100,7 @@
 
 			var getSizeBot = $(".aqua-slider-bot-container").height();
 			$(".aqua-slider-control-container").css({
-				height: (options.h + getSizeBot)
+				height: (Number(options.h) + Number(getSizeBot))
 			});
 			// ---
 
@@ -271,15 +282,6 @@
 				}
 			});
 			// ---
-
-			// Get the keypress
-			$(document).keyup(function(e){
-				if(e.keyCode == 39)
-					aqua_slider_click_next();
-				else if(e.keyCode == 37)
-					aqua_slider_click_prev();
-			});
-			// ----
 			
 			return aqua_self;
 		}
