@@ -10,7 +10,6 @@
 			options.h = select.height || 250;
 			options.b = select.bullet || "number";
 			options.a = select.animation || 7000;
-			options.p = select.player || "on";
 			options.c = select.control || "on";
 			options.i = select.autoPlay || "off";
 
@@ -83,11 +82,6 @@
 
 				aqua_tick_builder.addClass("aqua-slider-controler aqua-slider-tick").attr("img-select-tick",index);
 				$(".aqua-slider-bot-container div").append(aqua_tick_builder);
-			}
-			if(options.p == "on"){
-				var aqua_player_control = $("<label>");
-				aqua_player_control.addClass("aqua-slider-controler aqua-slider-player aqua-slider-click-play");
-				$(".aqua-slider-bot-container div span").first().before(aqua_player_control);
 			}
 
 			$(".aqua-slider-tick").each(function(){
@@ -268,21 +262,16 @@
 				setTimeout(function(){
 					aqua_slider_auto_slide();
 				},options.a);
-			}
 
-			//  Animation player
-			$(".aqua-slider-player").click(function(){
-				var self = $(this);
-				if(self.hasClass("aqua-slider-click-play")){
-					self.removeClass("aqua-slider-click-play").addClass("aqua-slider-click-pause");
-					aqua_slider_auto_slide();
-				}else{
-					self.removeClass("aqua-slider-click-pause").addClass("aqua-slider-click-play");
-				    clearTimeout(timeOut);
-				}
-			});
-			// ---
-			
+				$(".aqua-slider-control-container").on({
+					mouseenter: function(){
+						clearTimeout(timeOut);
+					},
+					mouseleave: function(){
+						timeOut = setTimeout(aqua_slider_auto_slide,options.a);
+					}
+				});
+			}
 			return aqua_self;
 		}
 	})
