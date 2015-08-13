@@ -9,7 +9,17 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ["sass/*.scss","js/aqua-script.js"],
-      tasks: ['uglify']
+      tasks: ['sass','uglify']
+    },
+    sass:{
+      options:{
+        style:"compressed"
+      },
+      dev:{
+        files:{
+          "css/aqua-style.css" : "sass/aqua-style.scss"
+        }
+      }
     },
     browserSync: {
       default_options: {
@@ -29,6 +39,7 @@ module.exports = function(grunt) {
       }
     }
   });
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-browser-sync');
