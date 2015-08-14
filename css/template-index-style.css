@@ -4,10 +4,16 @@ body{
 }
 
 #container{
-	width: 100%;
-	height: auto;
+	width: 800px;
+	height: 500px;
 	border: none !important;
 	overflow: auto;
 	position: relative;
 	margin: 0px auto;
+	margin: 0px auto;
+}
+
+#slider-imgs{
+	height: 100%;
+	position: absolute;
 }

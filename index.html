@@ -8,12 +8,12 @@
 	<body>
 		<div id="container">
 			<div id="slider-imgs">
-				<img src="imgs/img1.jpg" />
-				<img src="imgs/img2.jpg" />
-				<img src="imgs/img3.jpg" />
-				<img src="imgs/img4.jpg" />
-				<img src="imgs/img5.jpg" />
-				<img src="imgs/img6.jpg" />
+				<img src="imgs/img1.jpg" alt="img 1 Teste!" />
+				<img src="imgs/img2.jpg" alt="img 2 Teste!" />
+				<img src="imgs/img3.jpg" alt="img 3 Teste!" />
+				<img src="imgs/img4.jpg" alt="img 4 Teste!" />
+				<img src="imgs/img5.jpg" alt="img 5 Teste!" />
+				<img src="imgs/img6.jpg" alt="img 6 Teste!" />
 			</div>
 		</div>
 		<!-- javascript files -->
@@ -22,12 +22,12 @@
 		<!-- slider trigger -->
 		<script>
 			$("#slider-imgs").aquaSlider({
-				width:"100%",
-				height:420,
 				bullet:"image",
-				animation:5000,
-				autoPlay:"off",
-				control:"on"
+				autoPlay:"on",
+				control:"on",
+				type:"fade-horizon",
+				width:"100%",
+				height:350
 			});
 		</script>
 	</body>
