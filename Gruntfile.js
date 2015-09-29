@@ -37,13 +37,29 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+    copy:{
+      project:{
+        expand: true,
+        cwd:'.',
+        src:['css/**','imgs/**','js/**','index.html'],
+        dest:'dist'
+      }
+    },
+    clean:{
+      dist:{
+        src:'dist'
+      }
     }
   });
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-browser-sync');
 
   grunt.registerTask("default",["browserSync","watch"]);
+  grunt.registerTask("gerarApp",["clean","copy"]);
 
 };

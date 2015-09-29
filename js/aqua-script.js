@@ -337,15 +337,19 @@
 
 			//auto animation --
 			var timeOut = null;
+			var first_pass = false;
+
 			function aqua_slider_auto_slide(){
-				aqua_slider_click_next();
+				if(!first_pass){
+					first_pass = true;
+				}else{
+					aqua_slider_click_next();
+				}
 				timeOut = setTimeout(aqua_slider_auto_slide,options.a);
 			}
 
 			if(options.i == "on"){
-				setTimeout(function(){
-					aqua_slider_auto_slide();
-				},options.a);
+				aqua_slider_auto_slide();
 
 				$(".aqua-slider-control-container").on({
 					mouseover: function(){
