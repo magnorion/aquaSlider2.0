@@ -217,11 +217,10 @@
 			}
 
 			var objectAnimateNext;
-			if(options.t == "fade")
+			if(options.t == "fade" || options.t == "basic-fade")
 				objectAnimateNext = {opacity:0}
-			else if(options.t == "slice" || options.t == "slice-wave")
-				objectAnimateNext = {"top":"100%",opacity:1}
-
+			else if(options.t == "slice-wave")
+				objectAnimateNext = {"top":"100%"}
 
 			//btn right function
 			function aqua_slider_click_next(){
@@ -230,17 +229,23 @@
 				aqua_slider_current_image();
 				$(".aqua-right-control").unbind("click");
 				var current_image_src = $(current.image).attr("src");
-				var slicer_timer = 0;
+				var slicer_timer = 50;
 				$(".aqua-slider-slicer").css({backgroundImage:"url('"+current_image_src+"')",opacity:1});
 				aqua_self.find(".aqua-slider-slicer").each(function(){
 					var self = $(this);
-					slicer_timer += 150;
 					if(options.t == "slice"){
 						if( (Number(self.attr("aqua-slider-data-slicer")) % 2 ) == 0)
 							objectAnimateNext = {"top":"-100%",opacity:1}
 						else
 							objectAnimateNext = {"top":"100%",opacity:1}
+					}if(options.t == "basic-fade"){
+						slicer_timer = 500;
+					}else if(options.t == "slice-wave"){
+						slicer_timer += 150;
+					}else{
+						slicer_timer += 100;
 					}
+					console.log(slicer_timer);
 					$(current.image).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide").css({opacity:0});
 					$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").css({"opacity":1});
 					self.animate(objectAnimateNext,slicer_timer,function(){
@@ -262,9 +267,9 @@
 			});
 
 			var objectAnimatePrev;
-			if(options.t == "fade")
+			if(options.t == "fade" || options.t == "basic-fade")
 				objectAnimatePrev = {opacity:0}
-			else if(options.t == "slice" || options.t == "slice-wave")
+			else if(options.t == "slice-wave")
 				objectAnimatePrev = {"top":"100%",opacity:1}
 
 			// btn right function
@@ -275,21 +280,25 @@
 
 				$(".aqua-left-control").unbind("click");
 				var current_image_src = $(current.image).attr("src");
-				var slicer_timer = 0;
+				var slicer_timer = 50;
 				$(".aqua-slider-slicer").css({backgroundImage:"url('"+current_image_src+"')",opacity:1});
 				var position;
 				var data_slicer_limit = Number(slicer_count);
 				aqua_self.find(".aqua-slider-slicer").each(function(){
 					var self = $("[aqua-slider-data-slicer='"+data_slicer_limit+"']");
 					--data_slicer_limit;
-
 					if(options.t == "slice"){
 						if( (Number(self.attr("aqua-slider-data-slicer")) % 2 ) == 0)
 							objectAnimatePrev = {"top":"-100%",opacity:1}
 						else
 							objectAnimatePrev = {"top":"100%",opacity:1}
+					}if(options.t == "basic-fade"){
+						slicer_timer = 500;
+					}else if(options.t == "slice-wave"){
+						slicer_timer += 150;
+					}else{
+						slicer_timer += 100;
 					}
-					slicer_timer += 150;
 					$(current.image).removeClass("aqua-slider-image-show").addClass("aqua-slider-image-hide").css({opacity:0});
 					$(next.image).addClass("aqua-slider-image-show").removeClass("aqua-slider-image-hide").css({"opacity":1});
 					self.animate( objectAnimatePrev ,slicer_timer,function(){
@@ -338,7 +347,6 @@
 			//auto animation --
 			var timeOut = null;
 			var first_pass = false;
-
 			function aqua_slider_auto_slide(){
 				if(!first_pass){
 					first_pass = true;
