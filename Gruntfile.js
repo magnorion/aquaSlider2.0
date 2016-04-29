@@ -8,8 +8,14 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ["sass/*.scss","js/aqua-script.js"],
-      tasks: ['sass','uglify']
+      options:{
+        livereload:460
+      },
+      js_css:{
+        files: ["sass/*.scss","js/aqua-script.js"],
+        tasks: ['sass','uglify'],
+        reload:true
+      }
     },
     sass:{
       options:{
@@ -21,20 +27,11 @@ module.exports = function(grunt) {
         }
       }
     },
-    browserSync: {
-      default_options: {
-        bsFiles: {
-          src:[
-            "css/*.css",
-            "js/*.js",
-            "*.html"
-          ]
-        },
-        options: {
-          watchTask: true,
-          server: {
-            baseDir: "./"
-          }
+    connect:{
+      server:{
+        options:{
+          port:3000,
+          hostname:"*"
         }
       }
     },
@@ -57,9 +54,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-browser-sync');
 
-  grunt.registerTask("default",["browserSync","watch"]);
+  grunt.loadNpmTasks('grunt-contrib-connect');
+
+  grunt.registerTask("default",['connect','watch']);
   grunt.registerTask("gerarApp",["clean","copy"]);
 
 };
