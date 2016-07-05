@@ -15,6 +15,10 @@ module.exports = function(grunt) {
         files: ["sass/*.scss","js/aqua-script.js"],
         tasks: ['sass','uglify'],
         reload:true
+      },
+      html:{
+        files:['**/*.html'],
+        reload:true
       }
     },
     sass:{
